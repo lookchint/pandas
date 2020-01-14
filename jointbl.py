@@ -1,6 +1,9 @@
-def readRFT(path):
-    dfRFT = pd.read_excel(path, sheet_name=0, usecols='E:V', skiprows=5, skip_footer=44)
-    dfRFT.head(30)
+import pandas as pd
+
+
+
+def readRFT(pathRFT):
+    dfRFT = pd.read_excel(pathRFT, sheet_name=0, usecols='E:V', skiprows=5, skip_footer=44)
     dfRFT.drop([0], axis=0, inplace=True)
     dfRFT = dfRFT[['TMD_BRT', 'Form_SG']]
     dfRFT.dropna(inplace=True)
@@ -9,9 +12,9 @@ def readRFT(path):
     return dfRFT
 
 
-def readLWD(path):
+def readLWD(pathLWD):
     import re
-    with open(path, encoding="ISO-8859-1") as f:
+    with open(pathLWD, encoding="ISO-8859-1") as f:
         header_section = False
         data_section = False
         headers = []
@@ -33,14 +36,15 @@ def readLWD(path):
                 data.append(re.split('\s+', line.strip()))
 
     df = pd.DataFrame(data, columns=headers)
-    dfWD = df.apply(pd.to_numeric)
-    dfWD = dfWD[['DEPT', 'AT10', 'AT20', 'AT30', 'AT60', 'AT90', 'NPOR', 'GR']]
-    return dfWD
+    dfLWD = df.apply(pd.to_numeric)
+    dfLWD = dfLWD[['DEPT', 'AT10', 'AT20', 'AT30', 'AT60', 'AT90', 'NPOR', 'GR']]
+    return dfLWD
 
 
-def Mergefile(dfRFT, dfWD):
-    dfmerge = pd.merge_asof(dfWD, dfRFT, on='DEPT',direction='nearest')
-    dfmerge.dropna(inplace=True)
-    X = dfmerge[['DEPT', 'AT10', 'AT20', 'AT30', 'AT60', 'AT90', 'NPOR', 'GR']]
-    Y = dfmerge['Pressure']
-    return dfmerge, X, Y
+def Mergefile(dfRFT, dfLWD):
+    dfmerge = pd.merge_asof(dfRFT, dfLWD, on='DEPT', direction='nearest')
+    dfmerge
+
+    # X = dfmerge[['DEPT', 'AT10', 'AT20', 'AT30', 'AT60', 'AT90', 'NPOR', 'GR']]
+    # Y = dfmerge['Pressure']
+    return dfmerge
