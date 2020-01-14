@@ -1,9 +1,7 @@
 import pandas as pd
-from function import Append
 
-
-dftbl1 = pd.DataFrame({'A': [1, 2, 3, 4], 'B': [1, 2, 3, 4]})
-dftbl2 = pd.DataFrame({'A': [2, 3, 5, 6], 'C': ['ก', 'ข', 'ค', 'ง']})
-
-x=Append(dftbl1, dftbl2)
-print(x)
+pathRFT = 'AT-33_F_PTW_6.125''.xls'
+pathLWD = "AT-33-F_SX(TCombo)_6.125_DLog_Envi.las"
+dataRFT = readRFT(pathRFT)
+dataLWD = readLWD(pathLWD)
+Mergefile(dataRFT, dataLWD)
